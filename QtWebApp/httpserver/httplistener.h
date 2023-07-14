@@ -55,7 +55,7 @@ namespace stefanfrings {
 */
 
 class DECLSPEC HttpListener : public QTcpServer {
-    Q_OBJECT
+    CS_OBJECT(HttpListener)
     Q_DISABLE_COPY(HttpListener)
 public:
 
@@ -104,14 +104,15 @@ private:
     /** Pool of connection handlers */
     HttpConnectionHandlerPool* pool;
 
-signals:
+public:
 
     /**
       Sent to the connection handler to process a new incoming connection.
       @param socketDescriptor references the accepted connection.
     */
 
-    void handleConnection(tSocketDescriptor socketDescriptor);
+    CS_SIGNAL_1(Public, void handleConnection(tSocketDescriptor socketDescriptor))
+    CS_SIGNAL_2(handleConnection,socketDescriptor) 
 
 };
 

@@ -54,7 +54,7 @@ namespace stefanfrings {
 */
 
 class DECLSPEC FileLogger : public Logger {
-    Q_OBJECT
+    CS_OBJECT(FileLogger)
     Q_DISABLE_COPY(FileLogger)
 public:
 

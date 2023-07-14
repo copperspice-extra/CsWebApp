@@ -16,7 +16,7 @@ using namespace stefanfrings;
 */
 
 class RequestMapper : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(RequestMapper)
     Q_DISABLE_COPY(RequestMapper)
 public:
 

@@ -50,7 +50,7 @@ namespace stefanfrings {
   size of the body must not exceed maxMultiPartSize.
 */
 class DECLSPEC HttpConnectionHandler : public QObject {
-    Q_OBJECT
+    CS_OBJECT(HttpConnectionHandler)
     Q_DISABLE_COPY(HttpConnectionHandler)
 
 public:
@@ -102,27 +102,32 @@ private:
     /**  Create SSL or TCP socket */
     void createSocket();
 
-public slots:
+public :
 
     /**
       Received from from the listener, when the handler shall start processing a new connection.
       @param socketDescriptor references the accepted connection.
     */
-    void handleConnection(const tSocketDescriptor socketDescriptor);
+    CS_SLOT_1(Public, void handleConnection(const tSocketDescriptor socketDescriptor))
+    CS_SLOT_2(handleConnection) 
 
-private slots:
+private :
 
     /** Received from the socket when a read-timeout occured */
-    void readTimeout();
+    CS_SLOT_1(Private, void readTimeout())
+    CS_SLOT_2(readTimeout) 
 
     /** Received from the socket when incoming data can be read */
-    void read();
+    CS_SLOT_1(Private, void read())
+    CS_SLOT_2(read) 
 
     /** Received from the socket when a connection has been closed */
-    void disconnected();
+    CS_SLOT_1(Private, void disconnected())
+    CS_SLOT_2(disconnected) 
 
     /** Cleanup after the thread is closed */
-    void thread_done();
+    CS_SLOT_1(Private, void thread_done())
+    CS_SLOT_2(thread_done) 
 };
 
 } // end of namespace

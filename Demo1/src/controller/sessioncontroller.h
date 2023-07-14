@@ -17,7 +17,7 @@ using namespace stefanfrings;
 */
 
 class SessionController : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(SessionController)
     Q_DISABLE_COPY(SessionController)
 public:
 

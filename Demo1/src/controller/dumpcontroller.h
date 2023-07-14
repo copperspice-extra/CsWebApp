@@ -17,7 +17,7 @@ using namespace stefanfrings;
 */
 
 class DumpController : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(DumpController)
     Q_DISABLE_COPY(DumpController)
 public:
 

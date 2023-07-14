@@ -18,7 +18,7 @@ using namespace stefanfrings;
 
 
 class FileUploadController : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(FileUploadController)
     Q_DISABLE_COPY(FileUploadController)
 public:
 

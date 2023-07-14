@@ -33,7 +33,7 @@ namespace stefanfrings {
 */
 
 class DECLSPEC HttpSessionStore : public QObject {
-    Q_OBJECT
+    CS_OBJECT(HttpSessionStore)
     Q_DISABLE_COPY(HttpSessionStore)
 public:
 
@@ -108,18 +108,20 @@ private:
     /** Used to synchronize threads */
     QMutex mutex;
 
-private slots:
+private :
 
     /** Called every minute to cleanup expired sessions. */
-    void sessionTimerEvent();
+    CS_SLOT_1(Private, void sessionTimerEvent())
+    CS_SLOT_2(sessionTimerEvent) 
 
-signals:
+public:
 
     /**
       Emitted when the session is deleted.
       @param sessionId The ID number of the session.
     */
-    void sessionDeleted(const QByteArray& sessionId);
+    CS_SIGNAL_1(Public, void sessionDeleted(const QByteArray & sessionId))
+    CS_SIGNAL_2(sessionDeleted,sessionId) 
 };
 
 } // end of namespace

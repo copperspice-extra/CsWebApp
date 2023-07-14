@@ -15,7 +15,7 @@ using namespace stefanfrings;
 */
 
 class RequestHandler : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(RequestHandler)
     Q_DISABLE_COPY(RequestHandler)
 public:
 

@@ -17,7 +17,7 @@ using namespace stefanfrings;
 */
 
 class LoginController : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(LoginController)
     Q_DISABLE_COPY(LoginController)
 public:
 

@@ -50,7 +50,7 @@ namespace stefanfrings {
 */
 
 class DECLSPEC Logger : public QObject {
-    Q_OBJECT
+    CS_OBJECT(Logger)
     Q_DISABLE_COPY(Logger)
 public:
 

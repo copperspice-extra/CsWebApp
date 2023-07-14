@@ -82,7 +82,7 @@ namespace stefanfrings {
 */
 
 class DECLSPEC HttpConnectionHandlerPool : public QObject {
-    Q_OBJECT
+    CS_OBJECT(HttpConnectionHandlerPool)
     Q_DISABLE_COPY(HttpConnectionHandlerPool)
 public:
 
@@ -122,10 +122,11 @@ private:
     /** Load SSL configuration */
     void loadSslConfig();
 
-private slots:
+private :
 
     /** Received from the clean-up timer.  */
-    void cleanup();
+    CS_SLOT_1(Private, void cleanup())
+    CS_SLOT_2(cleanup) 
 
 };
 

@@ -18,7 +18,7 @@ using namespace stefanfrings;
 
 
 class FormController : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(FormController)
     Q_DISABLE_COPY(FormController)
 public:
 

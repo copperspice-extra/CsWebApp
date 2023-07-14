@@ -17,7 +17,7 @@ using namespace stefanfrings;
 */
 
 class TemplateController : public HttpRequestHandler {
-    Q_OBJECT
+    CS_OBJECT(TemplateController)
     Q_DISABLE_COPY(TemplateController)
 public:
 
