@@ -1,4 +1,6 @@
 build-*-Debug
 build-*-Release
+build
 QtWebApp/doc/html
 *.pro.user*
+*.cs
