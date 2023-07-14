@@ -37,7 +37,7 @@ QString LogMessage::toString(const QString& msgFormat, const QString& timestampF
     }
 
     QString typeNr;
-    typeNr.setNum(type);
+    typeNr=QString::number(type);
     decorated.replace("{typeNr}",typeNr);
 
     switch (type)
@@ -54,28 +54,37 @@ QString LogMessage::toString(const QString& msgFormat, const QString& timestampF
         case QtFatalMsg: // or QtSystemMsg which has the same int value
             decorated.replace("{type}","FATAL   ");
             break;
+            /*
     #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
         case QtInfoMsg:
             decorated.replace("{type}","INFO    ");
             break;
     #endif
+    */
     }
 
     decorated.replace("{file}",file);
     decorated.replace("{function}",function);
     decorated.replace("{line}",QString::number(line));
 
-    QString threadId = QString("0x%1").arg(qulonglong(QThread::currentThreadId()), 8, 16, QLatin1Char('0'));
-    decorated.replace("{thread}",threadId);
+    QString local_threadId=QString("0x%1").formatArg((long long)QThread::currentThreadId(),8,16,QLatin1Char('0'));
+    decorated.replace("{thread}",local_threadId);
 
     // Fill in variables
     if (decorated.contains("{") && !logVars.isEmpty())
     {
         QList<QString> keys=logVars.keys();
+        for(int i=0; i<keys.size(); i++)
+          {
+          decorated.replace("{"+keys[i]+"}",logVars.value(keys[i]));
+          }
+          /*
         foreach (QString key, keys)
         {
             decorated.replace("{"+key+"}",logVars.value(key));
         }
+        */
+
     }
 
     return decorated;

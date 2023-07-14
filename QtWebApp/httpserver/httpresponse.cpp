@@ -54,19 +54,22 @@ void HttpResponse::writeHeaders()
     buffer.append(' ');
     buffer.append(statusText);
     buffer.append("\r\n");
-    foreach(QByteArray name, headers.keys())
-    {
-        buffer.append(name);
-        buffer.append(": ");
-        buffer.append(headers.value(name));
-        buffer.append("\r\n");
-    }
-    foreach(HttpCookie cookie,cookies.values())
-    {
-        buffer.append("Set-Cookie: ");
-        buffer.append(cookie.toByteArray());
-        buffer.append("\r\n");
-    }
+    //foreach(QByteArray name, headers.keys())
+    for(int i=0; i<headers.keys().size(); i++)
+      {
+      buffer.append(headers.keys()[i]);
+      buffer.append(": ");
+      buffer.append(headers.value(headers.keys()[i]));
+      buffer.append("\r\n");
+      }
+    //foreach(HttpCookie cookie,cookies.values())
+    for(int i=0; i<cookies.values().size(); i++)
+      {
+      buffer.append("Set-Cookie: ");
+      buffer.append(cookies.values()[i].toByteArray());
+      buffer.append("\r\n");
+      }
+    
     buffer.append("\r\n");
     writeToSocket(buffer);
     socket->flush();

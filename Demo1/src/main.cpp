@@ -26,9 +26,10 @@ QString searchConfigFile()
     searchList.append(QDir::rootPath()+"etc/opt");
     searchList.append(QDir::rootPath()+"etc");
 
-    foreach (QString dir, searchList)
+    //foreach (QString dir, searchList)
+    for(int i=0;i<searchList.size();i++)
     {
-        QFile file(dir+"/"+fileName);
+        QFile file(searchList[i]+"/"+fileName);
         if (file.exists())
         {
             fileName=QDir(file.fileName()).canonicalPath();
@@ -38,12 +39,13 @@ QString searchConfigFile()
     }
 
     // not found
-    foreach (QString dir, searchList)
+    //foreach (QString dir, searchList)
+    for(int i=0; i<searchList.size(); i++)
     {
-        qWarning("%s/%s not found",qPrintable(dir),qPrintable(fileName));
+        qWarning("%s/%s not found",qPrintable(searchList[i]),qPrintable(fileName));
     }
     qFatal("Cannot find config file %s",qPrintable(fileName));
-    return nullptr;
+    return QString();
 }
 
 

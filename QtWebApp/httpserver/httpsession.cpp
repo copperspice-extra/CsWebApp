@@ -16,7 +16,7 @@ HttpSession::HttpSession(bool canStore)
         dataPtr=new HttpSessionData();
         dataPtr->refCount=1;
         dataPtr->lastAccess=QDateTime::currentMSecsSinceEpoch();
-        dataPtr->id=QUuid::createUuid().toString().toLocal8Bit();
+        dataPtr->id=QUuid::createUuid().toString().toUtf8();
 #ifdef SUPERVERBOSE
         qDebug("HttpSession: (constructor) new session %s with refCount=1",dataPtr->id.constData());
 #endif

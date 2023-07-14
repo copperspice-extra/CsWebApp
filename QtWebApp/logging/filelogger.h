@@ -6,7 +6,7 @@
 #ifndef FILELOGGER_H
 #define FILELOGGER_H
 
-#include <QtGlobal>
+#include <QGlobal>
 #include <QSettings>
 #include <QFile>
 #include <QMutex>

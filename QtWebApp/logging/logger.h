@@ -6,7 +6,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <QtGlobal>
+#include <QGlobal>
 #include <QThreadStorage>
 #include <QHash>
 #include <QStringList>
@@ -161,7 +161,7 @@ private:
                            const QString &function="", const int line=0);
 
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+//#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 
     /**
       Wrapper for QT version 5.
@@ -170,9 +170,9 @@ private:
       @param message Message text
       @see msgHandler()
     */
-    static void msgHandler5(const QtMsgType type, const QMessageLogContext& context, const QString &message);
+//    static void msgHandler5(const QtMsgType type, const QMessageLogContext& context, const QString &message);
 
-#else
+//#else
 
     /**
       Wrapper for QT version 4.
@@ -180,9 +180,12 @@ private:
       @param message Message text
       @see msgHandler()
     */
-    static void msgHandler4(const QtMsgType type, const char * message);
+//    static void msgHandler4(const QtMsgType type, const char * message);
 
-#endif
+//#endif
+
+    static void msgHandler4(const QtMsgType type,QStringView message);
+    
 
     /** Thread local variables to be used in log messages */
     static QThreadStorage<QHash<QString,QString>*> logVars;

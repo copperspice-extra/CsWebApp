@@ -4,6 +4,7 @@
 */
 
 #include "httpcookie.h"
+#include "qdebug.h"
 
 using namespace stefanfrings;
 
@@ -37,21 +38,21 @@ HttpCookie::HttpCookie(const QByteArray source)
     secure=false;
     httpOnly=false;
     QList<QByteArray> list=splitCSV(source);
-    foreach(QByteArray part, list)
+    for(int ii=0; ii<list.size(); ii++)
     {
 
         // Split the part into name and value
         QByteArray name;
         QByteArray value;
-        int posi=part.indexOf('=');
+        int posi=list[ii].indexOf('=');
         if (posi)
         {
-            name=part.left(posi).trimmed();
-            value=part.mid(posi+1).trimmed();
+            name=list[ii].left(posi).trimmed();
+            value=list[ii].mid(posi+1).trimmed();
         }
         else
         {
-            name=part.trimmed();
+            name=list[ii].trimmed();
             value="";
         }
 

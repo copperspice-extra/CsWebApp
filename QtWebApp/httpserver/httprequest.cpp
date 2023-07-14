@@ -15,8 +15,8 @@ HttpRequest::HttpRequest(const QSettings* settings)
     status=waitForRequest;
     currentSize=0;
     expectedBodySize=0;
-    maxSize=settings->value("maxRequestSize","16000").toInt();
-    maxMultiPartSize=settings->value("maxMultiPartSize","1000000").toInt();
+    maxSize=settings->value("maxRequestSize",QString("16000")).toInt();
+    maxMultiPartSize=settings->value("maxMultiPartSize",QString("1000000")).toInt();
     tempFile=nullptr;
 }
 
@@ -239,21 +239,21 @@ void HttpRequest::decodeRequestParams()
     }
     // Split the parameters into pairs of value and name
     QList<QByteArray> list=rawParameters.split('&');
-    foreach (QByteArray part, list)
-    {
-        int equalsChar=part.indexOf('=');
-        if (equalsChar>=0)
+    for(int j=0; j<list.size(); j++)
+      {
+      int equalsChar=list[j].indexOf('=');
+      if(equalsChar>=0)
         {
-            QByteArray name=part.left(equalsChar).trimmed();
-            QByteArray value=part.mid(equalsChar+1).trimmed();
-            parameters.insert(urlDecode(name),urlDecode(value));
+        QByteArray name=list[j].left(equalsChar).trimmed();
+        QByteArray value=list[j].mid(equalsChar+1).trimmed();
+        parameters.insert(urlDecode(name),urlDecode(value));
         }
-        else if (!part.isEmpty())
+      else if(!list[j].isEmpty())
         {
-            // Name without value
-            parameters.insert(urlDecode(part),"");
+        // Name without value
+        parameters.insert(urlDecode(list[j]),"");
         }
-    }
+      }
 }
 
 void HttpRequest::extractCookies()
@@ -261,30 +261,31 @@ void HttpRequest::extractCookies()
     #ifdef SUPERVERBOSE
         qDebug("HttpRequest: extract cookies");
     #endif
-    foreach(QByteArray cookieStr, headers.values("cookie"))
-    {
-        QList<QByteArray> list=HttpCookie::splitCSV(cookieStr);
-        foreach(QByteArray part, list)
-        {
-            #ifdef SUPERVERBOSE
-                qDebug("HttpRequest: found cookie %s",part.data());
-            #endif                // Split the part into name and value
+        for(int i=0; i<headers.values("cookie").size(); i++)
+          {
+          QList<QByteArray> list=HttpCookie::splitCSV(headers.values("cookie")[i]);
+          for(int j=0; j<list.size(); j++)
+            //foreach(QByteArray part, list)
+            {
+#ifdef SUPERVERBOSE
+            qDebug("HttpRequest: found cookie %s",part.data());
+#endif                // Split the part into name and value
             QByteArray name;
             QByteArray value;
-            int posi=part.indexOf('=');
-            if (posi)
-            {
-                name=part.left(posi).trimmed();
-                value=part.mid(posi+1).trimmed();
-            }
+            int posi=list[j].indexOf('=');
+            if(posi)
+              {
+              name=list[j].left(posi).trimmed();
+              value=list[j].mid(posi+1).trimmed();
+              }
             else
-            {
-                name=part.trimmed();
-                value="";
-            }
+              {
+              name=list[j].trimmed();
+              value="";
+              }
             cookies.insert(name,value);
-        }
-    }
+          }
+  }
     headers.remove("cookie");
 }
 
@@ -532,22 +533,22 @@ void HttpRequest::parseMultiPartFile()
 
 HttpRequest::~HttpRequest()
 {
-    foreach(QByteArray key, uploadedFiles.keys())
+  for(int ii=0; ii<uploadedFiles.keys().size(); ii++)
     {
-        QTemporaryFile* file=uploadedFiles.value(key);
-        if (file->isOpen())
-        {
-            file->close();
-        }
-        delete file;
+    QTemporaryFile* file=uploadedFiles.value(uploadedFiles.keys()[ii]);
+    if(file->isOpen())
+      {
+      file->close();
+      }
+    delete file;
     }
-    if (tempFile != nullptr)
+  if(tempFile!=nullptr)
     {
-        if (tempFile->isOpen())
-        {
-            tempFile->close();
-        }
-        delete tempFile;
+    if(tempFile->isOpen())
+      {
+      tempFile->close();
+      }
+    delete tempFile;
     }
 }
 

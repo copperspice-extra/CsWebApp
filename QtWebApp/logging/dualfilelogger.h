@@ -8,7 +8,7 @@
 
 #include <QString>
 #include <QSettings>
-#include <QtGlobal>
+#include <QGlobal>
 #include "logglobal.h"
 #include "logger.h"
 #include "filelogger.h"

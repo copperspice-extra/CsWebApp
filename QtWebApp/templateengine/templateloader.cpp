@@ -10,18 +10,19 @@
 #include <QDir>
 #include <QSet>
 #include <QTextStream>
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    #include <QRegularExpression>
-#else
-    #include <QRegExp>
-#endif
+#include <QRegularExpression>
+//#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+//    #include <QRegularExpression>
+//#else
+//    #include <QRegExp>
+//#endif
 
 using namespace stefanfrings;
 
 TemplateLoader::TemplateLoader(const QSettings *settings, QObject *parent)
     : QObject(parent)
 {
-    templatePath=settings->value("path",".").toString();
+    templatePath=settings->value("path",QString(".")).toString();
     // Convert relative path to absolute, based on the directory of the config file.
 #ifdef Q_OS_WIN32
     if (QDir::isRelativePath(templatePath) && settings->format()!=QSettings::NativeFormat)
@@ -32,7 +33,7 @@ TemplateLoader::TemplateLoader(const QSettings *settings, QObject *parent)
         QFileInfo configFile(settings->fileName());
         templatePath=QFileInfo(configFile.absolutePath(),templatePath).absoluteFilePath();
     }
-    fileNameSuffix=settings->value("suffix",".tpl").toString();
+    fileNameSuffix=settings->value("suffix",QString(".tpl")).toString();
     QString encoding=settings->value("encoding").toString();
     if (encoding.isEmpty())
     {
@@ -40,7 +41,7 @@ TemplateLoader::TemplateLoader(const QSettings *settings, QObject *parent)
     }
     else
     {
-       textCodec=QTextCodec::codecForName(encoding.toLocal8Bit());
+       textCodec=QTextCodec::codecForName(encoding.toUtf8());
     }
     qDebug("TemplateLoader: path=%s, codec=%s",qPrintable(templatePath),qPrintable(encoding));
 }
@@ -74,23 +75,26 @@ Template TemplateLoader::getTemplate(QString templateName, QString locales)
 {
     QSet<QString> tried; // used to suppress duplicate attempts
 
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-        QStringList locs=locales.split(',',Qt::SkipEmptyParts);
-    #else
-        QStringList locs=locales.split(',',QString::SkipEmptyParts);
-    #endif
+    QStringList locs=locales.split(',',QStringParser::SkipEmptyParts);
+ //   #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+ //       QStringList locs=locales.split(',',Qt::SkipEmptyParts);
+ //   #else
+ //       QStringList locs=locales.split(',',QString::SkipEmptyParts);
+ //   #endif
 
     // Search for exact match
-    foreach (QString loc,locs)
+    //foreach (QString loc,locs)
+    for(int i=0; i<locs.size(); i++)
     {
-        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            loc.replace(QRegularExpression(";.*"),"");
-        #else
-            loc.replace(QRegExp(";.*"),"");
-        #endif
-        loc.replace('-','_');
+      locs[i].replace(QRegularExpression(";.*"),"");
+//        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+//            loc.replace(QRegularExpression(";.*"),"");
+//        #else
+//            loc.replace(QRegExp(";.*"),"");
+//        #endif
+        locs[i].replace('-','_');
 
-        QString localizedName=templateName+"-"+loc.trimmed();
+        QString localizedName=templateName+"-"+locs[i].trimmed();
         if (!tried.contains(localizedName))
         {
             QString document=tryFile(localizedName);
@@ -102,14 +106,16 @@ Template TemplateLoader::getTemplate(QString templateName, QString locales)
     }
 
     // Search for correct language but any country
-    foreach (QString loc,locs)
+    //foreach (QString loc,locs)
+    for(int i=0; i<locs.size(); i++)
     {
-        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            loc.replace(QRegularExpression("[;_-].*"),"");
-        #else
-            loc.replace(QRegExp("[;_-].*"),"");
-        #endif
-        QString localizedName=templateName+"-"+loc.trimmed();
+      locs[i].replace(QRegularExpression("[;_-].*"),"");
+//        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+//            loc.replace(QRegularExpression("[;_-].*"),"");
+//        #else
+//            loc.replace(QRegExp("[;_-].*"),"");
+//        #endif
+        QString localizedName=templateName+"-"+locs[i].trimmed();
         if (!tried.contains(localizedName))
         {
             QString document=tryFile(localizedName);

@@ -9,10 +9,12 @@
 #include <QDateTime>
 #include <QThread>
 #include <QObject>
+#include <QRecursiveMutex>
+/*
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     #include <QRecursiveMutex>
 #endif
-
+*/
 using namespace stefanfrings;
 
 Logger* Logger::defaultLogger=nullptr;
@@ -41,7 +43,7 @@ Logger::Logger(const QString msgFormat, const QString timestampFormat, const QtM
     this->minLevel=minLevel;
     this->bufferSize=bufferSize;
 }
-
+/*
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     static QRecursiveMutex recursiveMutex;
     static QMutex nonRecursiveMutex;
@@ -49,6 +51,9 @@ Logger::Logger(const QString msgFormat, const QString timestampFormat, const QtM
     static QMutex recursiveMutex(QMutex::Recursive);
     static QMutex nonRecursiveMutex(QMutex::NonRecursive);
 #endif
+*/
+    static QRecursiveMutex recursiveMutex;
+    static QMutex nonRecursiveMutex;
 
 void Logger::msgHandler(const QtMsgType type, const QString &message, const QString &file, const QString &function, const int line)
 {   
@@ -78,7 +83,7 @@ void Logger::msgHandler(const QtMsgType type, const QString &message, const QStr
     recursiveMutex.unlock();
 }
 
-
+/*
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     void Logger::msgHandler5(const QtMsgType type, const QMessageLogContext &context, const QString &message)
     {
@@ -91,17 +96,25 @@ void Logger::msgHandler(const QtMsgType type, const QString &message, const QStr
         msgHandler(type,message);
     }
 #endif
+*/
+    void Logger::msgHandler4(const QtMsgType type,QStringView message)
+      {
+      msgHandler(type,message);
+      }
 
 
 Logger::~Logger()
 {
     if (defaultLogger==this)
     {
+    /*
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         qInstallMessageHandler(nullptr);
 #else
         qInstallMsgHandler(nullptr);
 #endif
+*/
+        csInstallMsgHandler(nullptr);
         defaultLogger=nullptr;
     }
 }
@@ -117,11 +130,14 @@ void Logger::write(const LogMessage* logMessage)
 void Logger::installMsgHandler()
 {
     defaultLogger=this;
+    /*
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     qInstallMessageHandler(msgHandler5);
 #else
     qInstallMsgHandler(msgHandler4);
 #endif
+*/
+    qInstallMsgHandler(msgHandler4);
 }
 
 
@@ -171,7 +187,7 @@ void Logger::log(const QtMsgType type, const QString& message, const QString &fi
                 toPrint=true;
             }
             break;
-
+/*
     #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
         case QtInfoMsg:
             if (minLevel==QtDebugMsg ||
@@ -181,12 +197,12 @@ void Logger::log(const QtMsgType type, const QString& message, const QString &fi
             }
             break;
     #endif
-
+*/
         case QtWarningMsg:
             if (minLevel==QtDebugMsg ||
-                #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-                    minLevel==QtInfoMsg ||
-                #endif
+ //               #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+ //                   minLevel==QtInfoMsg ||
+ //               #endif
                 minLevel==QtWarningMsg)
             {
                 toPrint=true;
@@ -195,9 +211,9 @@ void Logger::log(const QtMsgType type, const QString& message, const QString &fi
 
         case QtCriticalMsg: // or QtSystemMsg which has the same int value
             if (minLevel==QtDebugMsg ||
-                #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-                    minLevel==QtInfoMsg ||
-                #endif
+ //               #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+ //                   minLevel==QtInfoMsg ||
+ //               #endif
                 minLevel==QtWarningMsg ||
                 minLevel==QtCriticalMsg)
             {

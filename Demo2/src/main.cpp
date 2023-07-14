@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
     // Collect hardcoded configarion settings
     QSettings* settings=new QSettings(&app);
     // settings->setValue("host","192.168.0.100");
-    settings->setValue("port","8080");
-    settings->setValue("minThreads","4");
-    settings->setValue("maxThreads","100");
-    settings->setValue("cleanupInterval","60000");
-    settings->setValue("readTimeout","60000");
-    settings->setValue("maxRequestSize","16000");
-    settings->setValue("maxMultiPartSize","10000000");
+    settings->setValue("port",QString("8080"));
+    settings->setValue("minThreads",QString("4"));
+    settings->setValue("maxThreads",QString("100"));
+    settings->setValue("cleanupInterval",QString("60000"));
+    settings->setValue("readTimeout",QString("60000"));
+    settings->setValue("maxRequestSize",QString("16000"));
+    settings->setValue("maxMultiPartSize",QString("10000000"));
     // settings->setValue("sslKeyFile","ssl/my.key");
     // settings->setValue("sslCertFile","ssl/my.cert");
 

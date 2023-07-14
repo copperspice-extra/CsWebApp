@@ -6,7 +6,7 @@
 #ifndef LOGGLOBAL_H
 #define LOGGLOBAL_H
 
-#include <QtGlobal>
+#include <QGlobal>
 
 // This is specific to Windows dll's
 #if defined(Q_OS_WIN)

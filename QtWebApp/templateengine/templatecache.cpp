@@ -8,8 +8,8 @@ using namespace stefanfrings;
 TemplateCache::TemplateCache(const QSettings* settings, QObject* parent)
     :TemplateLoader(settings,parent)
 {
-    cache.setMaxCost(settings->value("cacheSize","1000000").toInt());
-    cacheTimeout=settings->value("cacheTime","60000").toInt();
+    cache.setMaxCost(settings->value("cacheSize",QString("1000000")).toInt());
+    cacheTimeout=settings->value("cacheTime",QString("60000")).toInt();
     long int cacheMaxCost=(long int)cache.maxCost();
     qDebug("TemplateCache: timeout=%i, size=%li",cacheTimeout,cacheMaxCost);
 }

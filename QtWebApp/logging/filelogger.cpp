@@ -7,7 +7,7 @@
 #include <QTime>
 #include <QStringList>
 #include <QThread>
-#include <QtGlobal>
+#include <QGlobal>
 #include <QFile>
 #include <QTimerEvent>
 #include <QDir>
@@ -37,12 +37,12 @@ void FileLogger::refreshSettings()
     }
     maxSize=settings->value("maxSize",0).toLongLong();
     maxBackups=settings->value("maxBackups",0).toInt();
-    msgFormat=settings->value("msgFormat","{timestamp} {type} {msg}").toString();
-    timestampFormat=settings->value("timestampFormat","yyyy-MM-dd hh:mm:ss.zzz").toString();
+    msgFormat=settings->value("msgFormat",QString("{timestamp} {type} {msg}")).toString();
+    timestampFormat=settings->value("timestampFormat",QString("yyyy-MM-dd hh:mm:ss.zzz")).toString();
     bufferSize=settings->value("bufferSize",0).toInt();
 
     // Translate log level settings to enumeration value
-    QByteArray minLevelStr = settings->value("minLevel","ALL").toByteArray();
+    QByteArray minLevelStr = settings->value("minLevel",QString("ALL")).toByteArray();
     if (minLevelStr=="ALL" || minLevelStr=="DEBUG" || minLevelStr=="0")
     {
         minLevel=QtMsgType::QtDebugMsg;
@@ -59,10 +59,12 @@ void FileLogger::refreshSettings()
     {
         minLevel=QtMsgType::QtFatalMsg;
     }
+    /*
     else if (minLevelStr=="INFO" || minLevelStr=="4")
     {
         minLevel=QtMsgType::QtInfoMsg;
     }
+    */
 
     // Create new file if the filename has been changed
     if (oldFileName!=fileName)
@@ -160,9 +162,9 @@ void FileLogger::close()
 void FileLogger::rotate() {
     // count current number of existing backup files
     int count=0;
-    forever
+    while(1)
     {
-        QFile bakFile(QString("%1.%2").arg(fileName).arg(count+1));
+        QFile bakFile(QString("%1.%2").formatArg(fileName).formatArg(count+1));
         if (bakFile.exists())
         {
             ++count;
@@ -176,13 +178,13 @@ void FileLogger::rotate() {
     // Remove all old backup files that exceed the maximum number
     while (maxBackups>0 && count>=maxBackups)
     {
-        QFile::remove(QString("%1.%2").arg(fileName).arg(count));
+        QFile::remove(QString("%1.%2").formatArg(fileName).formatArg(count));
         --count;
     }
 
     // Rotate backup files
     for (int i=count; i>0; --i) {
-        QFile::rename(QString("%1.%2").arg(fileName).arg(i),QString("%1.%2").arg(fileName).arg(i+1));
+        QFile::rename(QString("%1.%2").formatArg(fileName).formatArg(i),QString("%1.%2").formatArg(fileName).formatArg(i+1));
     }
 
     // Backup the current logfile

@@ -25,12 +25,12 @@ HttpConnectionHandlerPool::HttpConnectionHandlerPool(const QSettings *settings, 
 HttpConnectionHandlerPool::~HttpConnectionHandlerPool()
 {
     // delete all connection handlers and wait until their threads are closed
-    foreach(HttpConnectionHandler* handler, pool)
+  for(int i=0; i<pool.size(); i++)
     {
-       delete handler;
+    delete pool[i];
     }
-    delete sslConfiguration;
-    qDebug("HttpConnectionHandlerPool (%p): destroyed", this);
+  delete sslConfiguration;
+  qDebug("HttpConnectionHandlerPool (%p): destroyed",this);
 }
 
 
@@ -39,15 +39,15 @@ HttpConnectionHandler* HttpConnectionHandlerPool::getConnectionHandler()
     HttpConnectionHandler* freeHandler=0;
     mutex.lock();
     // find a free handler in pool
-    foreach(HttpConnectionHandler* handler, pool)
-    {
-        if (!handler->isBusy())
+    for(int i=0; i<pool.size(); i++)
+      {
+      if(!pool[i]->isBusy())
         {
-            freeHandler=handler;
-            freeHandler->setBusy();
-            break;
+        freeHandler=pool[i];
+        freeHandler->setBusy();
+        break;
         }
-    }
+      }
     // create a new handler, if necessary
     if (!freeHandler)
     {
@@ -69,20 +69,20 @@ void HttpConnectionHandlerPool::cleanup()
     int maxIdleHandlers=settings->value("minThreads",1).toInt();
     int idleCounter=0;
     mutex.lock();
-    foreach(HttpConnectionHandler* handler, pool)
-    {
-        if (!handler->isBusy())
+    for(int i=0; i<pool.size(); i++)
+      {
+      if(!pool[i]->isBusy())
         {
-            if (++idleCounter > maxIdleHandlers)
-            {
-                delete handler;
-                pool.removeOne(handler);
-                long int poolSize=(long int)pool.size();
-                qDebug("HttpConnectionHandlerPool: Removed connection handler (%p), pool size is now %li",handler,poolSize);
-                break; // remove only one handler in each interval
-            }
+        if(++idleCounter>maxIdleHandlers)
+          {
+          delete pool[i];
+          pool.removeOne(pool[i]);
+          long int poolSize=(long int)pool.size();
+          qDebug("HttpConnectionHandlerPool: Removed connection handler (%p), pool size is now %li",pool[i],poolSize);
+          break; // remove only one handler in each interval
+          }
         }
-    }
+      }
     mutex.unlock();
 }
 
@@ -90,10 +90,10 @@ void HttpConnectionHandlerPool::cleanup()
 void HttpConnectionHandlerPool::loadSslConfig()
 {
     // If certificate and key files are configured, then load them
-    QString sslKeyFileName=settings->value("sslKeyFile","").toString();
-    QString sslCertFileName=settings->value("sslCertFile","").toString();
-    QString caCertFileName=settings->value("caCertFile","").toString();
-    bool verifyPeer=settings->value("verifyPeer","false").toBool();
+    QString sslKeyFileName=settings->value("sslKeyFile",QString("")).toString();
+    QString sslCertFileName=settings->value("sslCertFile",QString("")).toString();
+    QString caCertFileName=settings->value("caCertFile",QString("")).toString();
+    bool verifyPeer=settings->value("verifyPeer",false).toBool();
 
     if (!sslKeyFileName.isEmpty() && !sslCertFileName.isEmpty())
     {
@@ -149,9 +149,9 @@ void HttpConnectionHandlerPool::loadSslConfig()
             // We can optionally use a CA certificate to validate the HTTP clients
             if (!caCertFileName.isEmpty())
             {
-                #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-                    qCritical("HttpConnectionHandlerPool: Using a caCertFile requires Qt 5.15 or newer");
-                #else
+ //               #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+ //                   qCritical("HttpConnectionHandlerPool: Using a caCertFile requires Qt 5.15 or newer");
+ //               #else
 
                     // Convert relative fileName to absolute, based on the directory of the config file.
                     #ifdef Q_OS_WIN32
@@ -174,7 +174,9 @@ void HttpConnectionHandlerPool::loadSslConfig()
                     caCertFile.close();
 
                     // Configure SSL
-                    sslConfiguration->addCaCertificate(caCertificate);
+                    QList<QSslCertificate> caCerts;
+                    caCerts<<caCertificate;
+                    sslConfiguration->setCaCertificates(caCerts);
                 #endif
             }
 
@@ -189,6 +191,6 @@ void HttpConnectionHandlerPool::loadSslConfig()
             }
 
             qDebug("HttpConnectionHandlerPool: SSL settings loaded");
-         #endif
+         //#endif
     }
 }
