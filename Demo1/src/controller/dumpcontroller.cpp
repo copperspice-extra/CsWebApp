@@ -28,11 +28,11 @@ void DumpController::service(HttpRequest& request, HttpResponse& response)
     body.append(request.getVersion());
 
     body.append("<p><b>Headers:</b>");
-    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    //#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QMultiMapIterator<QByteArray,QByteArray> i(request.getHeaderMap());
-    #else
-        QMapIterator<QByteArray,QByteArray> i(request.getHeaderMap());
-    #endif
+    //#else
+    //    QMapIterator<QByteArray,QByteArray> i(request.getHeaderMap());
+    //#endif
     while (i.hasNext())
     {
         i.next();
@@ -44,11 +44,11 @@ void DumpController::service(HttpRequest& request, HttpResponse& response)
 
     body.append("<p><b>Parameters:</b>");
 
-    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    //#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         i=QMultiMapIterator<QByteArray,QByteArray>(request.getParameterMap());
-    #else
-        i=QMapIterator<QByteArray,QByteArray>(request.getParameterMap());
-    #endif
+    //#else
+    //    i=QMapIterator<QByteArray,QByteArray>(request.getParameterMap());
+    //#endif
     while (i.hasNext())
     {
         i.next();

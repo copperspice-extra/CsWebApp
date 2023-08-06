@@ -49,11 +49,6 @@ target_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/../QtWebApp/templateengine
   ${CMAKE_CURRENT_SOURCE_DIR}/src
   ${CMAKE_CURRENT_SOURCE_DIR}/src/controller
-  D:/CS_1_8_2_MSVC_Install/include/
-  D:/CS_1_8_2_MSVC_Install/include/QtCore
-  D:/CS_1_8_2_MSVC_Install/include/QtNetwork
-  D:/CS_1_8_2_MSVC_Install/include/QtSql
-  D:/CS_1_8_2_MSVC_Install/include/QtGui
   )
   
 target_LINK_DIRECTORIES(${PROJECT_NAME} PUBLIC

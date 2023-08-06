@@ -118,7 +118,8 @@ void HttpResponse::write(QByteArray data, bool lastPart)
         else
         {
             QByteArray connectionValue=headers.value("Connection",headers.value("connection"));
-            bool connectionClose=QString::compare(connectionValue,"close",Qt::CaseInsensitive)==0;
+            //JJW
+            bool connectionClose=QString::compare(QString(connectionValue),QString("close"),Qt::CaseInsensitive)==0;
             if (!connectionClose)
             {
                 headers.insert("Transfer-Encoding","chunked");
