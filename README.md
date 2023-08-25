@@ -1,24 +1,30 @@
-# QtWebApp HTTP Server in C++
+## CsWebApp
 
-Fork from Stefan's QtWebApp: http://stefanfrings.de/qtwebapp/index-en.html
+### Introduction
 
-QtWepApp is a HTTP server library in C++, inspired by Java Servlets. For Linux, Windows, Mac OS and many other operating systems that the Qt Framework supports.
+CsWebApp is derivative work based on a library develeoped by Stefan Frings.
+
+CsWebApp is an HTTP server library written in C++ which was inspired by Java Servlets. This library can be used
+on versions of Linux, Windows and Mac OS which are supported by the CopperSpice libraries.
 
 QtWebApp contains the following components:
 
-* HTTP(S) Server
-* Template Engine
-* File Logger
-* These components can be used independently of each other.
-* The logger improves disk space and performance by retaining debug messages in memory until an error occurs. No debug messages are written as long everything works fine. Changes to the configuration of the logger become active automatically without program restart. A very small example:
+* HTTP(S) 1.0 and 1.1 server
+* Template engine
+* Buffered file logger
+
+The logger improves disk space and performance by retaining debug messages in memory until an error occurs. No debug
+messages are written as long as everything works fine. Changes to the configuration of the logger become active
+automatically without program restart.
+
 
 ### Usage
 
-This short example demonstrates how to use the library:
+The following is a short example which shows how to use the CsWebApp library.
 
 ```C++
 // The request handler receives and responds HTTP requests
-void MyRequestHandler::service(HttpRequest& request, HttpResponse& response)
+void MyRequestHandler::service(HttpRequest &request, HttpResponse &response)
 {
     // Get a request parameters
     QByteArray username = request.getParameter("username");
@@ -36,35 +42,40 @@ void MyRequestHandler::service(HttpRequest& request, HttpResponse& response)
 // The main program starts the HTTP server
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc,argv);
+   QCoreApplication app(argc, argv);
 
-    new HttpListener(
-        new QSettings("configfile.ini",QSettings::IniFormat,&app),
-        new MyRequestHandler(&app),
-        &app);
+   new HttpListener(
+      new QSettings("configfile.ini", QSettings::IniFormat, &app),
+      new MyRequestHandler(&app),
+      &app
+   );
 
     return app.exec();
 }
 ```
 
-### Tutorial
+### Building
 
-* http://stefanfrings.de/qtwebapp/tutorial/index.html
+To build CsWebApp from source a current copy of the CopperSpice libraries, a C++17 compiler, and a C++17 standard
+library are required.
 
-### API documentation
+CMake build files are provided with the CsWebApp source distribution located on github.
 
-* http://stefanfrings.de/qtwebapp/api/index.html
 
-### See also
+### License
 
-* https://github.com/StefanFrings/QtWebApp
-* https://github.com/azadkuh/qhttp
-* https://github.com/BoostGSoC14/boost.http
-* https://github.com/etr/libhttpserver
-* https://github.com/msrd0/QtWebApp
-* https://github.com/nikhilm/qhttpserver
-* https://github.com/nitroshare/qhttpengine
-* https://github.com/samiavasil/QtWebApp
-* https://github.com/yhirose/cpp-httplib
-* https://github.com/eidheim/Simple-Web-Server
-* https://gitlab.com/eidheim/Simple-Web-Server
+This program is released under the LGPL 3.0 license. For more information refer to the LICENSE file provided with
+this project.
+
+
+### References
+
+* Website:  https://www.copperspice.com
+* Twitter:  https://twitter.com/copperspice_cpp
+* Email:    info@copperspice.com
+
+* Github:   https://github.com/copperspice
+
+* Forum:    https://forum.copperspice.com
+* Journal:  https://journal.copperspice.com
+
