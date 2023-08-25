@@ -149,9 +149,6 @@ void HttpConnectionHandlerPool::loadSslConfig()
             // We can optionally use a CA certificate to validate the HTTP clients
             if (!caCertFileName.isEmpty())
             {
- //               #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
- //                   qCritical("HttpConnectionHandlerPool: Using a caCertFile requires Qt 5.15 or newer");
- //               #else
 
                     // Convert relative fileName to absolute, based on the directory of the config file.
                     #ifdef Q_OS_WIN32
@@ -177,7 +174,6 @@ void HttpConnectionHandlerPool::loadSslConfig()
                     QList<QSslCertificate> caCerts;
                     caCerts<<caCertificate;
                     sslConfiguration->setCaCertificates(caCerts);
-                #endif
             }
 
             // Enable or disable verification of the HTTP client
@@ -191,6 +187,6 @@ void HttpConnectionHandlerPool::loadSslConfig()
             }
 
             qDebug("HttpConnectionHandlerPool: SSL settings loaded");
-         //#endif
+         #endif
     }
 }

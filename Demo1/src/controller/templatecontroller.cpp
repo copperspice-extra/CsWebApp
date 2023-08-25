@@ -20,13 +20,6 @@ void TemplateController::service(HttpRequest& request, HttpResponse& response)
     t.setVariable("path",request.getPath());
 
     QMultiMap<QByteArray,QByteArray> headers=request.getHeaderMap();
-    /*
-    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        QMultiMapIterator<QByteArray,QByteArray> iterator(headers);
-    #else
-        QMapIterator<QByteArray,QByteArray> iterator(headers);
-    #endif
-    */
     QMultiMapIterator<QByteArray,QByteArray> iterator(headers);
 
     t.loop("header",headers.size());
