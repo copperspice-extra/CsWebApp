@@ -3,14 +3,15 @@
   @author Stefan Frings
 */
 
-#include "templateloader.h"
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QStringList>
-#include <QDir>
 #include <QSet>
+#include <QStringList>
 #include <QTextStream>
 #include <QRegularExpression>
+
+#include "templateloader.h"
 
 using namespace stefanfrings;
 

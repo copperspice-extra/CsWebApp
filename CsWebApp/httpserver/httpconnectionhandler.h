@@ -9,10 +9,12 @@
 #ifndef QT_NO_SSL
    #include <QSslConfiguration>
 #endif
+
 #include <QTcpSocket>
 #include <QSettings>
 #include <QTimer>
 #include <QThread>
+
 #include "httpglobal.h"
 #include "httprequest.h"
 #include "httprequesthandler.h"

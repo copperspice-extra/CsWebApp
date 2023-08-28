@@ -6,11 +6,11 @@
 #ifndef TEMPLATE_H
 #define TEMPLATE_H
 
-#include <QString>
-#include <QIODevice>
-#include <QTextCodec>
 #include <QFile>
+#include <QIODevice>
 #include <QString>
+#include <QTextCodec>
+
 #include "templateglobal.h"
 
 namespace stefanfrings {

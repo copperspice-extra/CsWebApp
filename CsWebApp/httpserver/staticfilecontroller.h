@@ -8,6 +8,7 @@
 
 #include <QCache>
 #include <QMutex>
+
 #include "httpglobal.h"
 #include "httprequest.h"
 #include "httpresponse.h"

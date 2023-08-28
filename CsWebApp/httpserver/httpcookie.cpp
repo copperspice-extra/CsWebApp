@@ -3,8 +3,9 @@
   @author Stefan Frings
 */
 
+#include <QDebug>
+
 #include "httpcookie.h"
-#include "qdebug.h"
 
 using namespace stefanfrings;
 

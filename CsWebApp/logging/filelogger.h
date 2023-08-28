@@ -6,11 +6,12 @@
 #ifndef FILELOGGER_H
 #define FILELOGGER_H
 
-#include <QGlobal>
-#include <QSettings>
-#include <QFile>
-#include <QMutex>
 #include <QBasicTimer>
+#include <QFile>
+#include <QGlobal>
+#include <QMutex>
+#include <QSettings>
+
 #include "logglobal.h"
 #include "logger.h"
 

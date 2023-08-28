@@ -6,10 +6,11 @@
 #ifndef TEMPLATELOADER_H
 #define TEMPLATELOADER_H
 
+#include <QMutex>
 #include <QString>
 #include <QSettings>
-#include <QMutex>
 #include <QTextCodec>
+
 #include "templateglobal.h"
 #include "template.h"
 

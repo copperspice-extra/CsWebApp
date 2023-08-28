@@ -3,8 +3,9 @@
   @author Stefan Frings
 */
 
-#include "template.h"
 #include <QFileInfo>
+
+#include "template.h"
 
 using namespace stefanfrings;
 

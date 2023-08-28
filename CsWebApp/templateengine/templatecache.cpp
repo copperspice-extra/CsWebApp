@@ -1,7 +1,8 @@
-#include "templatecache.h"
 #include <QDateTime>
-#include <QStringList>
 #include <QSet>
+#include <QStringList>
+
+#include "templatecache.h"
 
 using namespace stefanfrings;
 

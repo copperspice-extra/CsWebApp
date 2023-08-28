@@ -4,6 +4,7 @@
 */
 
 #include <QCoreApplication>
+
 #include "global.h"
 #include "requestmapper.h"
 #include "filelogger.h"

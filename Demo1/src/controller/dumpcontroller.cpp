@@ -3,10 +3,11 @@
   @author Stefan Frings
 */
 
-#include "dumpcontroller.h"
-#include <QVariant>
 #include <QDateTime>
 #include <QThread>
+#include <QVariant>
+
+#include "dumpcontroller.h"
 
 DumpController::DumpController()
 {}

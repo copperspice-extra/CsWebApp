@@ -6,9 +6,10 @@
 #ifndef DUALFILELOGGER_H
 #define DUALFILELOGGER_H
 
-#include <QString>
-#include <QSettings>
 #include <QGlobal>
+#include <QSettings>
+#include <QString>
+
 #include "logglobal.h"
 #include "logger.h"
 #include "filelogger.h"

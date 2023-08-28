@@ -3,10 +3,11 @@
   @author Stefan Frings
 */
 
-#include "staticfilecontroller.h"
-#include <QFileInfo>
 #include <QDir>
 #include <QDateTime>
+#include <QFileInfo>
+
+#include "staticfilecontroller.h"
 
 using namespace stefanfrings;
 

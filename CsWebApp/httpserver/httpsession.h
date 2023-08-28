@@ -7,8 +7,9 @@
 #define HTTPSESSION_H
 
 #include <QByteArray>
-#include <QVariant>
 #include <QReadWriteLock>
+#include <QVariant>
+
 #include "httpglobal.h"
 
 namespace stefanfrings {

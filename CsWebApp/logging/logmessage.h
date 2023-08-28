@@ -6,9 +6,10 @@
 #ifndef LOGMESSAGE_H
 #define LOGMESSAGE_H
 
-#include <QGlobal>
 #include <QDateTime>
+#include <QGlobal>
 #include <QHash>
+
 #include "logglobal.h"
 
 namespace stefanfrings {

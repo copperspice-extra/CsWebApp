@@ -2,6 +2,7 @@
 #define TEMPLATECACHE_H
 
 #include <QCache>
+
 #include "templateglobal.h"
 #include "templateloader.h"
 

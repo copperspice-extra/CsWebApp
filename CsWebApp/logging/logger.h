@@ -7,11 +7,12 @@
 #define LOGGER_H
 
 #include <QGlobal>
-#include <QThreadStorage>
 #include <QHash>
-#include <QStringList>
 #include <QMutex>
 #include <QObject>
+#include <QStringList>
+#include <QThreadStorage>
+
 #include "logglobal.h"
 #include "logmessage.h"
 

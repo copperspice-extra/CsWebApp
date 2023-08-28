@@ -6,10 +6,11 @@
 #ifndef HTTPSESSIONSTORE_H
 #define HTTPSESSIONSTORE_H
 
-#include <QObject>
 #include <QMap>
-#include <QTimer>
 #include <QMutex>
+#include <QObject>
+#include <QTimer>
+
 #include "httpglobal.h"
 #include "httpsession.h"
 #include "httpresponse.h"

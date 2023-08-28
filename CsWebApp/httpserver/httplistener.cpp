@@ -3,10 +3,11 @@
   @author Stefan Frings
 */
 
+#include <QCoreApplication>
+
 #include "httplistener.h"
 #include "httpconnectionhandler.h"
 #include "httpconnectionhandlerpool.h"
-#include <QCoreApplication>
 
 using namespace stefanfrings;
 

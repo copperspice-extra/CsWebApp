@@ -3,9 +3,10 @@
   @author Stefan Frings
 */
 
-#include "httpsession.h"
 #include <QDateTime>
 #include <QUuid>
+
+#include "httpsession.h"
 
 using namespace stefanfrings;
 

@@ -8,12 +8,13 @@
 
 #include <QByteArray>
 #include <QHostAddress>
-#include <QTcpSocket>
 #include <QMap>
 #include <QMultiMap>
 #include <QSettings>
 #include <QTemporaryFile>
+#include <QTcpSocket>
 #include <QUuid>
+
 #include "httpglobal.h"
 
 namespace stefanfrings {

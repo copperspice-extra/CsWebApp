@@ -3,13 +3,16 @@
   @author Stefan Frings
 */
 
-#include "logger.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include <QDateTime>
 #include <QThread>
 #include <QObject>
 #include <QRecursiveMutex>
+
+#include "logger.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 using namespace stefanfrings;
 
 Logger* Logger::defaultLogger=nullptr;

@@ -3,15 +3,17 @@
   @author Stefan Frings
 */
 
-#include "filelogger.h"
-#include <QTime>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QGlobal>
 #include <QStringList>
 #include <QThread>
-#include <QGlobal>
-#include <QFile>
+#include <QTime>
 #include <QTimerEvent>
-#include <QDir>
-#include <QFileInfo>
+
+#include "filelogger.h"
+
 #include <stdio.h>
 
 using namespace stefanfrings;
