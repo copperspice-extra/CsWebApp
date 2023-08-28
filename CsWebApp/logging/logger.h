@@ -163,8 +163,7 @@ private:
 
 
 
-    static void msgHandler4(const QtMsgType type,QStringView message);
-    
+    static void msgHandlerCS(const QtMsgType type, QStringView message);
 
     /** Thread local variables to be used in log messages */
     static QThreadStorage<QHash<QString,QString>*> logVars;

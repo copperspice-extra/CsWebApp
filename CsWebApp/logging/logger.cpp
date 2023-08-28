@@ -72,11 +72,10 @@ void Logger::msgHandler(const QtMsgType type, const QString &message, const QStr
     recursiveMutex.unlock();
 }
 
-    void Logger::msgHandler4(const QtMsgType type,QStringView message)
-      {
-      msgHandler(type,message);
-      }
-
+void Logger::msgHandlerCS(const QtMsgType type,QStringView message)
+{
+   msgHandler(type,message);
+}
 
 Logger::~Logger()
 {
@@ -98,7 +97,7 @@ void Logger::write(const LogMessage* logMessage)
 void Logger::installMsgHandler()
 {
     defaultLogger=this;
-    qInstallMsgHandler(msgHandler4);
+    qInstallMsgHandler(msgHandlerCS);
 }
 
 
