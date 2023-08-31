@@ -1,104 +1,45 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
-
-PROJECT(QtWebAppDemo2)
+PROJECT(CsWebAppDemo2)
 
 find_package(CopperSpice REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-SET(CMAKE_VERBOSE_MAKEFILE 1)
+if (MSVC)
+   add_definitions("/wd4127")
+endif()
 
-add_definitions("/wd4127")
 add_definitions("-DQT_NO_EMIT")
-add_definitions("-DQT_NO_WEBKIT")
 
-SET(QtWebAppDemo2_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/requesthandler.cpp
+set(CsWebAppDemo2_SOURCES
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/requesthandler.cpp
 )
 
-SET(QtWebAppDemo2_HEADERS
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/requesthandler.h
-)
-#PROJECT_NAME is most recent call, CMAKE_PROJECT_NAME is top level (QtWebAppCS)
-message(${PROJECT_NAME})
-ADD_EXECUTABLE(${PROJECT_NAME}
-    ${QtWebAppDemo2_SOURCES}
-    ${QtWebAppDemo2_HEADERS}
+set(CsWebAppDemo2_HEADERS
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/requesthandler.h
 )
 
-target_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/../QtWebApp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../QtWebApp/httpserver
-  ${CMAKE_CURRENT_SOURCE_DIR}/../QtWebApp/logging
-  ${CMAKE_CURRENT_SOURCE_DIR}/../QtWebApp/templateengine
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-  )
-  
-target_LINK_DIRECTORIES(${PROJECT_NAME} PUBLIC
-  ${CMAKE_BINARY_DIR}/QtWebAppCS
-  )
+add_executable(CsWebAppDemo2
+   ${CsWebAppDemo2_SOURCES}
+   ${CsWebAppDemo2_HEADERS}
+)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_include_directories(CsWebAppDemo2
+   PUBLIC
+   ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(CsWebAppDemo2
+   PUBLIC
    CopperSpice::CsCore
-   CopperSpice::CsGui
    CopperSpice::CsNetwork
-   CopperSpice::CsOpenGL
-   CopperSpice::CsScript
-   CopperSpice::CsSql
-   CopperSpice::CsSvg
-   CopperSpice::CsXml
-   CopperSpice::CsXmlPatterns
-   QtWebAppLibCS
+   CsWebAppLib
 )
+
+install(TARGETS CsWebAppDemo2 DESTINATION .)
 
 # installs the CopperSpice libraries
 cs_copy_library(CsCore)
-cs_copy_library(CsGui)
 cs_copy_library(CsNetwork)
-cs_copy_library(CsOpenGL)
-cs_copy_library(CsScript)
-cs_copy_library(CsSql)
-cs_copy_library(CsSvg)
-cs_copy_library(CsXml)
-cs_copy_library(CsXmlPatterns)
-
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-
-   set(CPACK_DMG_VOLUME_NAME QtWebAppDemo2)
-   set(CPACK_DMG_FORMAT UDBZ)
-
-   # installs the platform Gui plugin
-   cs_copy_plugins(CsGui ../plugins)
-
-   # two files
-   if("Multimedia" IN_LIST COPPERSPICE_COMPONENTS)
-      cs_copy_plugins(CsMultimedia ../plugins)
-   endif()
-
-elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-
-   # installs the platform Gui plugin
-   cs_copy_plugins(CsGui)
-   cs_copy_plugins(CsOpenGL)
-
-   # three files
-   if("Multimedia" IN_LIST COPPERSPICE_COMPONENTS)
-      cs_copy_plugins(CsMultimedia)
-   endif()
-
-elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   cs_copy_plugins(CsGui)
-elseif(CMAKE_SYSTEM_NAME MATCHES "MSVC")
-  cs_copy_plugins(CsGui)
-endif()
-
-FILE(GLOB qtDllFiles ABSOLUTE "${CsRootPath}/bin/*.dll")
-
-FOREACH(dllFname ${qtDllFiles})
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD        # Adds a post-build event to MyTest
-                       COMMAND ${CMAKE_COMMAND} -E copy_if_different  # which executes "cmake - E copy_if_different..."
-                       ${dllFname}      # <--this is in-file
-                       $<TARGET_FILE_DIR:${PROJECT_NAME}>) 
-ENDFOREACH(dllFname)
