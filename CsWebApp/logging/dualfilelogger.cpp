@@ -26,7 +26,8 @@ DualFileLogger::DualFileLogger(QSettings *firstSettings, QSettings* secondSettin
      secondLogger=new FileLogger(secondSettings, refreshInterval, this);
 }
 
-void DualFileLogger::log(const QtMsgType type, const QString& message, const QString &file, const QString &function, const int line)
+void DualFileLogger::log(const QtMsgType type, const QString& message, const QString &file,
+      const QString &function, const int line)
 {
     firstLogger->log(type,message,file,function,line);
     secondLogger->log(type,message,file,function,line);

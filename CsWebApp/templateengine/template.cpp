@@ -32,15 +32,17 @@ Template::Template(QFile& file, const QTextCodec* textCodec)
 {
     this->warnings=false;
     sourceName=QFileInfo(file.fileName()).baseName();
-    if (!file.isOpen())
-    {
+
+    if (!file.isOpen()) {
         file.open(QFile::ReadOnly | QFile::Text);
     }
+
     QByteArray data=file.readAll();
     file.close();
+
     if (data.size()==0 || file.error())
     {
-        qCritical("Template: cannot read from %s, %s",qPrintable(sourceName),qPrintable(file.errorString()));
+        qCritical("Template: Can not read from %s, %s", csPrintable(sourceName), csPrintable(file.errorString()));
     }
     else
     {
@@ -48,22 +50,22 @@ Template::Template(QFile& file, const QTextCodec* textCodec)
     }
 }
 
-
 int Template::setVariable(const QString name, const QString value)
 {
     int count=0;
     QString variable="{"+name+"}";
     int start=indexOf(variable);
-    while (start>=0)
-    {
+
+    while (start>=0) {
         replace(start, variable.length(), value);
         count++;
         start=indexOf(variable,start+value.length());
     }
-    if (count==0 && warnings)
-    {
-        qWarning("Template: missing variable %s in %s",qPrintable(variable),qPrintable(sourceName));
+
+    if (count==0 && warnings) {
+        qWarning("Template: Missing variable %s in %s", csPrintable(variable), csPrintable(sourceName));
     }
+
     return count;
 }
 
@@ -73,8 +75,10 @@ int Template::setCondition(const QString name, const bool value)
     QString startTag=QString("{if %1}").formatArg(name);
     QString elseTag=QString("{else %1}").formatArg(name);
     QString endTag=QString("{end %1}").formatArg(name);
+
     // search for if-else-end
     int start=indexOf(startTag);
+
     while (start>=0)
     {
         int end=indexOf(endTag,start+startTag.length());
@@ -112,14 +116,15 @@ int Template::setCondition(const QString name, const bool value)
         }
         else
         {
-            qWarning("Template: missing condition end %s in %s",qPrintable(endTag),qPrintable(sourceName));
+            qWarning("Template: Missing condition end %s in %s", csPrintable(endTag), csPrintable(sourceName));
         }
     }
+
     // search for ifnot-else-end
     QString startTag2="{ifnot "+name+"}";
     start=indexOf(startTag2);
-    while (start>=0)
-    {
+
+    while (start>=0) {
         int end=indexOf(endTag,start+startTag2.length());
         if (end>=0)
         {
@@ -155,25 +160,30 @@ int Template::setCondition(const QString name, const bool value)
         }
         else
         {
-            qWarning("Template: missing condition end %s in %s",qPrintable(endTag),qPrintable(sourceName));
+            qWarning("Template: missing condition end %s in %s", csPrintable(endTag), csPrintable(sourceName));
         }
     }
-    if (count==0 && warnings)
-    {
-        qWarning("Template: missing condition %s or %s in %s",qPrintable(startTag),qPrintable(startTag2),qPrintable(sourceName));
+
+    if (count==0 && warnings) {
+        qWarning("Template: missing condition %s or %s in %s", csPrintable(startTag),
+              csPrintable(startTag2), csPrintable(sourceName));
     }
+
     return count;
 }
 
 int Template::loop(const QString name, const int repetitions)
 {
     Q_ASSERT(repetitions>=0);
+
     int count=0;
     QString startTag="{loop "+name+"}";
     QString elseTag="{else "+name+"}";
     QString endTag="{end "+name+"}";
+
     // search for loop-else-end
     int start=indexOf(startTag);
+
     while (start>=0)
     {
         int end=indexOf(endTag,start+startTag.length());
@@ -239,13 +249,14 @@ int Template::loop(const QString name, const int repetitions)
         }
         else
         {
-            qWarning("Template: missing loop end %s in %s",qPrintable(endTag),qPrintable(sourceName));
+            qWarning("Template: Missing loop end %s in %s", csPrintable(endTag), csPrintable(sourceName));
         }
     }
-    if (count==0 && warnings)
-    {
-        qWarning("Template: missing loop %s in %s",qPrintable(startTag),qPrintable(sourceName));
+
+    if (count==0 && warnings) {
+        qWarning("Template: missing loop %s in %s", csPrintable(startTag), csPrintable(sourceName));
     }
+
     return count;
 }
 

@@ -64,15 +64,17 @@ namespace stefanfrings {
 
 class DECLSPEC Logger : public QObject {
     CS_OBJECT(Logger)
-    Q_DISABLE_COPY(Logger)
+
 public:
+    Logger(const Logger &) = delete;
+    Logger &operator=(const Logger &) = delete;
 
     /**
       Constructor.
       Uses the same defaults as the other constructor.
       @param parent Parent object
     */
-    Logger(QObject* parent);
+    Logger(QObject *parent);
 
 
     /**
@@ -86,10 +88,10 @@ public:
       @param parent Parent object
       @see LogMessage for a description of the message decoration.
     */
-    Logger(const QString msgFormat="{timestamp} {type} {msg}",
-           const QString timestampFormat="dd.MM.yyyy hh:mm:ss.zzz",
-           const QtMsgType minLevel=QtDebugMsg, const int bufferSize=0,
-           QObject* parent = nullptr);
+    Logger(const QString msgFormat = "{timestamp} {type} {msg}",
+           const QString timestampFormat = "dd.MM.yyyy hh:mm:ss.zzz",
+           const QtMsgType minLevel = QtDebugMsg, const int bufferSize = 0,
+           QObject *parent = nullptr);
 
     /** Destructor */
     virtual ~Logger();
@@ -104,8 +106,8 @@ public:
       @param line Line Number of the source file, where the message was generated (usually filles with the macro __func__ or __FUNCTION__)
       @see LogMessage for a description of the message decoration.
     */
-    virtual void log(const QtMsgType type, const QString& message, const QString &file="",
-                     const QString &function="", const int line=0);
+    virtual void log(const QtMsgType type, const QString& message, const QString &file = QString(),
+                     const QString &function = QString(), const int line=0);
 
     /**
       Installs this logger as the default message handler, so it
@@ -119,7 +121,7 @@ public:
       @param name Name of the variable
       @param value Value of the variable
     */
-    static void set(const QString& name, const QString& value);
+    static void set(const QString &name, const QString &value);
 
     /**
       Clear the thread-local data of the current thread.
@@ -127,10 +129,9 @@ public:
       @param buffer Whether to clear the backtrace buffer
       @param variables Whether to clear the log variables
     */
-    virtual void clear(const bool buffer=true, const bool variables=true);
+    virtual void clear(const bool buffer = true, const bool variables = true);
 
 protected:
-
     /** Format string for message decoration */
     QString msgFormat;
 
@@ -150,10 +151,9 @@ protected:
       Decorate and write a log message to stderr. Override this method
       to provide a different output medium.
     */
-    virtual void write(const LogMessage* logMessage);
+    virtual void write(const LogMessage *logMessage);
 
 private:
-
     /** Pointer to the default logger, used by msgHandler() */
     static Logger* defaultLogger;
 
@@ -170,10 +170,8 @@ private:
       @param function Name of the function where the message was generated (usually filled with the macro __LINE__)
       @param line Line Number of the source file, where the message was generated (usually filles with the macro __func__ or __FUNCTION__)
     */
-    static void msgHandler(const QtMsgType type, const QString &message, const QString &file="",
-                           const QString &function="", const int line=0);
-
-
+    static void msgHandler(const QtMsgType type, const QString &message, const QString &file = QString(),
+                           const QString &function = QString(), const int line = 0);
 
     static void msgHandlerCS(const QtMsgType type, QStringView message);
 
@@ -184,6 +182,6 @@ private:
     QThreadStorage<QList<LogMessage*>*> buffers;
 };
 
-} // end of namespace
+}   // end of namespace
 
-#endif // LOGGER_H
+#endif

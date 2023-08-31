@@ -29,55 +29,46 @@ using namespace stefanfrings;
 
 Logger* Logger::defaultLogger=nullptr;
 
-
 QThreadStorage<QHash<QString,QString>*> Logger::logVars;
-
-
 QMutex Logger::mutex;
 
+static QRecursiveMutex recursiveMutex;
+static QMutex nonRecursiveMutex;
 
 Logger::Logger(QObject* parent)
-    : QObject(parent),
-    msgFormat("{timestamp} {type} {msg}"),
-    timestampFormat("dd.MM.yyyy hh:mm:ss.zzz"),
-    minLevel(QtDebugMsg),
-    bufferSize(0)
-    {}
+   : QObject(parent), msgFormat("{timestamp} {type} {msg}"),
+     timestampFormat("dd.MM.yyyy hh:mm:ss.zzz"),
+     minLevel(QtDebugMsg), bufferSize(0)
+   { }
 
-
-Logger::Logger(const QString msgFormat, const QString timestampFormat, const QtMsgType minLevel, const int bufferSize, QObject* parent)
-    :QObject(parent)
+Logger::Logger(const QString msgFormat, const QString timestampFormat, const QtMsgType minLevel,
+   const int bufferSize, QObject* parent)
+   : QObject(parent)
 {
     this->msgFormat=msgFormat;
     this->timestampFormat=timestampFormat;
     this->minLevel=minLevel;
     this->bufferSize=bufferSize;
 }
-    static QRecursiveMutex recursiveMutex;
-    static QMutex nonRecursiveMutex;
 
 void Logger::msgHandler(const QtMsgType type, const QString &message, const QString &file, const QString &function, const int line)
-{   
+{
     // Prevent multiple threads from calling this method simultaneoulsy.
     // But allow recursive calls, which is required to prevent a deadlock
     // if the logger itself produces an error message.
     recursiveMutex.lock();
 
     // Fall back to stderr when this method has been called recursively.
-    if (defaultLogger && nonRecursiveMutex.tryLock())
-    {
+    if (defaultLogger && nonRecursiveMutex.tryLock()) {
         defaultLogger->log(type, message, file, function, line);
         nonRecursiveMutex.unlock();
-    }
-    else
-    {
-        fputs(qPrintable(message),stderr);
+    } else {
+        fputs(csPrintable(message),stderr);
         fflush(stderr);
     }
 
     // Abort the program after logging a fatal message
-    if (type==QtFatalMsg)
-    {
+    if (type == QtFatalMsg) {
         abort();
     }
 
@@ -93,25 +84,22 @@ Logger::~Logger()
 {
     if (defaultLogger==this)
     {
-        csInstallMsgHandler(nullptr);
-        defaultLogger=nullptr;
+       csInstallMsgHandler(nullptr);
+       defaultLogger = nullptr;
     }
 }
 
-
 void Logger::write(const LogMessage* logMessage)
 {
-    fputs(qPrintable(logMessage->toString(msgFormat,timestampFormat)),stderr);
+    fputs(csPrintable(logMessage->toString(msgFormat,timestampFormat)),stderr);
     fflush(stderr);
 }
 
-
 void Logger::installMsgHandler()
 {
-    defaultLogger=this;
+    defaultLogger = this;
     qInstallMsgHandler(msgHandlerCS);
 }
-
 
 void Logger::set(const QString& name, const QString& value)
 {
@@ -123,7 +111,6 @@ void Logger::set(const QString& name, const QString& value)
     logVars.localData()->insert(name,value);
     mutex.unlock();
 }
-
 
 void Logger::clear(const bool buffer, const bool variables)
 {
@@ -144,13 +131,13 @@ void Logger::clear(const bool buffer, const bool variables)
     mutex.unlock();
 }
 
-
 void Logger::log(const QtMsgType type, const QString& message, const QString &file, const QString &function, const int line)
-{    
+{
     // Check if the type of the message reached the configured minLevel in the order
     // DEBUG, INFO, WARNING, CRITICAL, FATAL
     // Since Qt 5.5: INFO messages are between DEBUG and WARNING
     bool toPrint=false;
+
     switch (type)
     {
         case QtDebugMsg:
@@ -159,11 +146,13 @@ void Logger::log(const QtMsgType type, const QString& message, const QString &fi
                 toPrint=true;
             }
             break;
+
 /*
         case QtInfoMsg:
             if (minLevel==QtDebugMsg || minLevel == QtInfoMsg) {
                 toPrint = true;
             }
+
             break;
 */
 
@@ -173,6 +162,7 @@ void Logger::log(const QtMsgType type, const QString& message, const QString &fi
             if (minLevel==QtDebugMsg || minLevel == QtWarningMsg) {
                 toPrint=true;
             }
+
             break;
 
         case QtCriticalMsg: // or QtSystemMsg which has the same int value
@@ -181,6 +171,7 @@ void Logger::log(const QtMsgType type, const QString& message, const QString &fi
             if (minLevel==QtDebugMsg || minLevel==QtWarningMsg || minLevel==QtCriticalMsg) {
                toPrint=true;
             }
+
             break;
 
         case QtFatalMsg:

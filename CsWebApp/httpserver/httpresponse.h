@@ -39,7 +39,7 @@ namespace stefanfrings {
   Example how to return an error:
   <code><pre>
     response.setStatus(500,"server error");
-    response.write("The request cannot be processed because the servers is broken",true);
+    response.write("The request can not be processed because the Server is unavailable",true);
   </pre></code>
   <p>
   In case of large responses (e.g. file downloads), a Content-Length header should be set
@@ -48,6 +48,7 @@ namespace stefanfrings {
 
 class DECLSPEC HttpResponse {
     Q_DISABLE_COPY(HttpResponse)
+
 public:
 
     /**

@@ -58,6 +58,7 @@ namespace stefanfrings {
 class DECLSPEC StaticFileController : public HttpRequestHandler  {
     CS_OBJECT(StaticFileController)
     Q_DISABLE_COPY(StaticFileController)
+
 public:
 
     /**

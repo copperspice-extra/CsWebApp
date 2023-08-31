@@ -39,6 +39,7 @@ namespace stefanfrings {
 class DECLSPEC HttpRequestHandler : public QObject {
     CS_OBJECT(HttpRequestHandler)
     Q_DISABLE_COPY(HttpRequestHandler)
+
 public:
 
     /**

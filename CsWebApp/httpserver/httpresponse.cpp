@@ -81,7 +81,7 @@ void HttpResponse::writeHeaders()
       buffer.append(cookies.values()[i].toByteArray());
       buffer.append("\r\n");
       }
-    
+
     buffer.append("\r\n");
     writeToSocket(buffer);
     socket->flush();
@@ -130,8 +130,10 @@ void HttpResponse::write(QByteArray data, bool lastPart)
         else
         {
             QByteArray connectionValue=headers.value("Connection",headers.value("connection"));
+
             //JJW
-            bool connectionClose=QString::compare(QString(connectionValue),QString("close"),Qt::CaseInsensitive)==0;
+            bool connectionClose=QString::compare(QString(connectionValue),"close",Qt::CaseInsensitive)==0;
+
             if (!connectionClose)
             {
                 headers.insert("Transfer-Encoding","chunked");

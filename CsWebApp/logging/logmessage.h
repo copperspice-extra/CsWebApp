@@ -48,8 +48,10 @@ namespace stefanfrings {
 
 class DECLSPEC LogMessage
 {
-    Q_DISABLE_COPY(LogMessage)
+
 public:
+    LogMessage(const LogMessage &) = delete;
+    LogMessage &operator=(const LogMessage &) = delete;
 
     /**
       Constructor. All parameters are copied, so that later changes to them do not

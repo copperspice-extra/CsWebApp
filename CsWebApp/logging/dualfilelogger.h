@@ -40,8 +40,10 @@ namespace stefanfrings {
 
 class DECLSPEC DualFileLogger : public Logger {
     CS_OBJECT(DualFileLogger)
-    Q_DISABLE_COPY(DualFileLogger)
+
 public:
+    DualFileLogger(const DualFileLogger &) = delete;
+    DualFileLogger &operator=(const DualFileLogger &) = delete;
 
     /**
       Constructor.

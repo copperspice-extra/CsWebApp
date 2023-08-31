@@ -62,6 +62,7 @@ namespace stefanfrings {
 class DECLSPEC TemplateCache : public TemplateLoader {
     CS_OBJECT(TemplateCache)
     Q_DISABLE_COPY(TemplateCache)
+
 public:
 
     /**

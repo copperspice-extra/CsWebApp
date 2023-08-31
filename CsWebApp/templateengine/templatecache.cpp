@@ -37,17 +37,19 @@ QString TemplateCache::tryFile(const QString localizedName)
     qint64 now=QDateTime::currentMSecsSinceEpoch();
     mutex.lock();
     // search in cache
-    qDebug("TemplateCache: trying cached %s",qPrintable(localizedName));
+    qDebug("TemplateCache: Trying cached %s", csPrintable(localizedName));
     CacheEntry* entry=cache.object(localizedName);
-    if (entry && (cacheTimeout==0 || entry->created>now-cacheTimeout))
-    {
+
+    if (entry && (cacheTimeout==0 || entry->created>now-cacheTimeout))     {
         mutex.unlock();
         return entry->document;
     }
+
     // search on filesystem
     entry=new CacheEntry();
     entry->created=now;
     entry->document=TemplateLoader::tryFile(localizedName);
+
     // Store in cache even when the file did not exist, to remember that there is no such file
     cache.insert(localizedName,entry,entry->document.size());
     mutex.unlock();

@@ -41,7 +41,7 @@ namespace stefanfrings {
   bufferSize=0
   minLevel=WARNING
   msgformat={timestamp} {typeNr} {type} thread={thread}: {msg}
-  timestampFormat=dd.MM.yyyy hh:mm:ss.zzz  
+  timestampFormat=dd.MM.yyyy hh:mm:ss.zzz
   </pre></code>
 
   - Possible log levels are: ALL/DEBUG=0, INFO=4, WARN/WARNING=1, ERROR/CRITICAL=2, FATAL=3
@@ -68,8 +68,10 @@ namespace stefanfrings {
 
 class DECLSPEC FileLogger : public Logger {
     CS_OBJECT(FileLogger)
-    Q_DISABLE_COPY(FileLogger)
+
 public:
+    FileLogger(const FileLogger &) = delete;
+    FileLogger &operator=(const FileLogger &) = delete;
 
     /**
       Constructor.
@@ -139,7 +141,6 @@ private:
       This method is thread-safe.
     */
     void refreshSettings();
-
 };
 
 } // end of namespace

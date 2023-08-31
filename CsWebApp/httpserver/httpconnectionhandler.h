@@ -22,10 +22,10 @@
 #   include <QSslConfiguration>
 #endif
 
-#include <QTcpSocket>
 #include <QSettings>
-#include <QTimer>
+#include <QTcpSocket>
 #include <QThread>
+#include <QTimer>
 
 #include "httpglobal.h"
 #include "httprequest.h"
@@ -84,6 +84,13 @@ public:
     /** Mark this handler as busy */
     void setBusy();
 
+    /**
+      Received from from the listener, when the handler shall start processing a new connection.
+      @param socketDescriptor references the accepted connection.
+    */
+    CS_SLOT_1(Public, void handleConnection(const tSocketDescriptor socketDescriptor))
+    CS_SLOT_2(handleConnection)
+
 private:
 
     /** Configuration settings */
@@ -113,32 +120,21 @@ private:
     /**  Create SSL or TCP socket */
     void createSocket();
 
-public :
-
-    /**
-      Received from from the listener, when the handler shall start processing a new connection.
-      @param socketDescriptor references the accepted connection.
-    */
-    CS_SLOT_1(Public, void handleConnection(const tSocketDescriptor socketDescriptor))
-    CS_SLOT_2(handleConnection) 
-
-private :
-
     /** Received from the socket when a read-timeout occured */
     CS_SLOT_1(Private, void readTimeout())
-    CS_SLOT_2(readTimeout) 
+    CS_SLOT_2(readTimeout)
 
     /** Received from the socket when incoming data can be read */
     CS_SLOT_1(Private, void read())
-    CS_SLOT_2(read) 
+    CS_SLOT_2(read)
 
     /** Received from the socket when a connection has been closed */
     CS_SLOT_1(Private, void disconnected())
-    CS_SLOT_2(disconnected) 
+    CS_SLOT_2(disconnected)
 
     /** Cleanup after the thread is closed */
     CS_SLOT_1(Private, void thread_done())
-    CS_SLOT_2(thread_done) 
+    CS_SLOT_2(thread_done)
 };
 
 } // end of namespace

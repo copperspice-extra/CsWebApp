@@ -19,9 +19,9 @@
 #define HTTPCONNECTIONHANDLERPOOL_H
 
 #include <QList>
-#include <QTimer>
-#include <QObject>
 #include <QMutex>
+#include <QObject>
+#include <QTimer>
 
 #include "httpglobal.h"
 #include "httpconnectionhandler.h"
@@ -40,7 +40,7 @@ namespace stefanfrings {
 
   minThreads=4
   maxThreads=100
-  cleanupInterval=60000  
+  cleanupInterval=60000
   </pre></code>
   <p>
   The readTimeout value defines the maximum time to wait for a complete HTTP request.
@@ -102,6 +102,7 @@ namespace stefanfrings {
 class DECLSPEC HttpConnectionHandlerPool : public QObject {
     CS_OBJECT(HttpConnectionHandlerPool)
     Q_DISABLE_COPY(HttpConnectionHandlerPool)
+
 public:
 
     /**
@@ -140,12 +141,9 @@ private:
     /** Load SSL configuration */
     void loadSslConfig();
 
-private :
-
     /** Received from the clean-up timer.  */
     CS_SLOT_1(Private, void cleanup())
-    CS_SLOT_2(cleanup) 
-
+    CS_SLOT_2(cleanup)
 };
 
 } // end of namespace

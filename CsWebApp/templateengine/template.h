@@ -101,6 +101,7 @@ namespace stefanfrings {
 */
 
 class DECLSPEC Template : public QString {
+
 public:
 
     /**

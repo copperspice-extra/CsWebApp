@@ -37,36 +37,34 @@ HttpListener::HttpListener(const QSettings* settings, HttpRequestHandler* reques
     listen();
 }
 
-
 HttpListener::~HttpListener()
 {
     close();
     qDebug("HttpListener: destroyed");
 }
 
-
 void HttpListener::listen()
 {
-    if (!pool)
-    {
-        pool=new HttpConnectionHandlerPool(settings,requestHandler);
+    if (! pool) {
+        pool = new HttpConnectionHandlerPool(settings,requestHandler);
     }
+
     QString host = settings->value("host").toString();
-    quint16 port=settings->value("port").toUInt() & 0xFFFF;
+    quint16 port = settings->value("port").toUInt() & 0xFFFF;
+
     QTcpServer::listen(host.isEmpty() ? QHostAddress::Any : QHostAddress(host), port);
-    if (!isListening())
-    {
-        qCritical("HttpListener: Cannot bind on port %i: %s",port,qPrintable(errorString()));
-    }
-    else {
+
+    if (! isListening()) {
+        qCritical("HttpListener: Can not bind on port %i: %s",port, csPrintable(errorString()));
+    } else {
         qDebug("HttpListener: Listening on port %i",port);
     }
 }
 
-
 void HttpListener::close() {
     QTcpServer::close();
     qDebug("HttpListener: closed");
+
     if (pool) {
         delete pool;
         pool=nullptr;
@@ -79,19 +77,16 @@ void HttpListener::incomingConnection(tSocketDescriptor socketDescriptor) {
 #endif
 
     HttpConnectionHandler* freeHandler=nullptr;
-    if (pool)
-    {
+    if (pool) {
         freeHandler=pool->getConnectionHandler();
     }
 
     // Let the handler process the new connection.
-    if (freeHandler)
-    {
+    if (freeHandler) {
         // The descriptor is passed via event queue because the handler lives in another thread
         QMetaObject::invokeMethod(freeHandler, "handleConnection", Qt::QueuedConnection, Q_ARG(tSocketDescriptor, socketDescriptor));
-    }
-    else
-    {
+
+    } else {
         // Reject the connection
         qDebug("HttpListener: Too many incoming connections");
         QTcpSocket* socket=new QTcpSocket(this);

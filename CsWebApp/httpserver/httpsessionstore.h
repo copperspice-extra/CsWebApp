@@ -48,6 +48,7 @@ namespace stefanfrings {
 class DECLSPEC HttpSessionStore : public QObject {
     CS_OBJECT(HttpSessionStore)
     Q_DISABLE_COPY(HttpSessionStore)
+
 public:
 
     /**
@@ -100,6 +101,13 @@ public:
     /** Delete a session */
     void removeSession(const HttpSession session);
 
+    /**
+      Emitted when the session is deleted.
+      @param sessionId The ID number of the session.
+    */
+    CS_SIGNAL_1(Public, void sessionDeleted(const QByteArray & sessionId))
+    CS_SIGNAL_2(sessionDeleted,sessionId)
+
 protected:
     /** Storage for the sessions */
     QMap<QByteArray,HttpSession> sessions;
@@ -121,20 +129,9 @@ private:
     /** Used to synchronize threads */
     QMutex mutex;
 
-private :
-
     /** Called every minute to cleanup expired sessions. */
     CS_SLOT_1(Private, void sessionTimerEvent())
-    CS_SLOT_2(sessionTimerEvent) 
-
-public:
-
-    /**
-      Emitted when the session is deleted.
-      @param sessionId The ID number of the session.
-    */
-    CS_SIGNAL_1(Public, void sessionDeleted(const QByteArray & sessionId))
-    CS_SIGNAL_2(sessionDeleted,sessionId) 
+    CS_SLOT_2(sessionTimerEvent)
 };
 
 } // end of namespace

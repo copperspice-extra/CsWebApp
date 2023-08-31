@@ -70,6 +70,7 @@ namespace stefanfrings {
 class DECLSPEC HttpListener : public QTcpServer {
     CS_OBJECT(HttpListener)
     Q_DISABLE_COPY(HttpListener)
+
 public:
 
     /**
@@ -101,6 +102,14 @@ public:
     */
     void close();
 
+    /**
+      Sent to the connection handler to process a new incoming connection.
+      @param socketDescriptor references the accepted connection.
+    */
+
+    CS_SIGNAL_1(Public, void handleConnection(tSocketDescriptor socketDescriptor))
+    CS_SIGNAL_2(handleConnection,socketDescriptor)
+
 protected:
 
     /** Serves new incoming connection requests */
@@ -116,17 +125,6 @@ private:
 
     /** Pool of connection handlers */
     HttpConnectionHandlerPool* pool;
-
-public:
-
-    /**
-      Sent to the connection handler to process a new incoming connection.
-      @param socketDescriptor references the accepted connection.
-    */
-
-    CS_SIGNAL_1(Public, void handleConnection(tSocketDescriptor socketDescriptor))
-    CS_SIGNAL_2(handleConnection,socketDescriptor) 
-
 };
 
 } // end of namespace

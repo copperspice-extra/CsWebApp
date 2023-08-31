@@ -31,52 +31,56 @@ TemplateLoader::TemplateLoader(const QSettings *settings, QObject *parent)
     : QObject(parent)
 {
     templatePath=settings->value("path",QString(".")).toString();
+
     // Convert relative path to absolute, based on the directory of the config file.
 #ifdef Q_OS_WIN32
-    if (QDir::isRelativePath(templatePath) && settings->format()!=QSettings::NativeFormat)
+    if (QDir::isRelativePath(templatePath) && settings->format()!=QSettings::NativeFormat) {
 #else
-    if (QDir::isRelativePath(templatePath))
+    if (QDir::isRelativePath(templatePath)) {
 #endif
-    {
+
         QFileInfo configFile(settings->fileName());
         templatePath=QFileInfo(configFile.absolutePath(),templatePath).absoluteFilePath();
     }
+
     fileNameSuffix=settings->value("suffix",QString(".tpl")).toString();
     QString encoding=settings->value("encoding").toString();
-    if (encoding.isEmpty())
-    {
+
+    if (encoding.isEmpty()) {
         textCodec=QTextCodec::codecForLocale();
     }
     else
     {
        textCodec=QTextCodec::codecForName(encoding.toUtf8());
     }
-    qDebug("TemplateLoader: path=%s, codec=%s",qPrintable(templatePath),qPrintable(encoding));
+    qDebug("TemplateLoader: path=%s, codec=%s", csPrintable(templatePath), csPrintable(encoding));
 }
 
 TemplateLoader::~TemplateLoader()
-{}
+{ }
 
 QString TemplateLoader::tryFile(QString localizedName)
 {
     QString fileName=templatePath+"/"+localizedName+fileNameSuffix;
-    qDebug("TemplateCache: trying file %s",qPrintable(fileName));
+    qDebug("TemplateCache: trying file %s", csPrintable(fileName));
+
     QFile file(fileName);
+
     if (file.exists()) {
         file.open(QIODevice::ReadOnly);
         QString document=textCodec->toUnicode(file.readAll());
         file.close();
-        if (file.error())
-        {
-            qCritical("TemplateLoader: cannot load file %s, %s",qPrintable(fileName),qPrintable(file.errorString()));
-            return "";
-        }
-        else
-        {
+
+        if (file.error()) {
+            qCritical("TemplateLoader: Can not load file %s, %s", csPrintable(fileName), csPrintable(file.errorString()));
+            return QString();
+
+        } else {
             return document;
         }
     }
-    return "";
+
+    return QString();
 }
 
 Template TemplateLoader::getTemplate(QString templateName, QString locales)
@@ -123,11 +127,12 @@ Template TemplateLoader::getTemplate(QString templateName, QString locales)
 
     // Search for default file
     QString document=tryFile(templateName);
-    if (!document.isEmpty())
-    {
+
+    if (!document.isEmpty()) {
         return Template(document,templateName);
     }
 
-    qCritical("TemplateCache: cannot find template %s",qPrintable(templateName));
+    qCritical("TemplateCache: Can not find template %s", csPrintable(templateName));
+
     return Template("",templateName);
 }
