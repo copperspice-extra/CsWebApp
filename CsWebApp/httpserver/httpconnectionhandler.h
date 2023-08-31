@@ -19,7 +19,7 @@
 #define HTTPCONNECTIONHANDLER_H
 
 #if defined (QT_SSL)
-   #include <QSslConfiguration>
+#   include <QSslConfiguration>
 #endif
 
 #include <QTcpSocket>
@@ -39,7 +39,7 @@ typedef qintptr tSocketDescriptor;
 
 /** Alias for QSslConfiguration if OpenSSL is not supported */
 #if ! defined (QT_SSL)
-  #define QSslConfiguration QObject
+#   define QSslConfiguration QObject
 #endif
 
 /**

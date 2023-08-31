@@ -16,10 +16,10 @@
 **************************************************************************/
 
 #if defined (QT_SSL)
-    #include <QSslCertificate>
-    #include <QSslConfiguration>
-    #include <QSslKey>
-    #include <QSslSocket>
+#   include <QSslCertificate>
+#   include <QSslConfiguration>
+#   include <QSslKey>
+#   include <QSslSocket>
 #endif
 
 #include <QDir>

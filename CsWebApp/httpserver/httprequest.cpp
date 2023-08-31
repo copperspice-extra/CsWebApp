@@ -36,9 +36,9 @@ HttpRequest::HttpRequest(const QSettings* settings)
 
 void HttpRequest::readRequest(QTcpSocket* socket)
 {
-    #ifdef SUPERVERBOSE
-        qDebug("HttpRequest: read request");
-    #endif
+#ifdef SUPERVERBOSE
+   qDebug("HttpRequest: read request");
+#endif
     int toRead=maxSize-currentSize+1; // allow one byte more to be able to detect overflow
     QByteArray dataRead = socket->readLine(toRead);
     currentSize += dataRead.size();
@@ -225,9 +225,9 @@ void HttpRequest::readBody(QTcpSocket* socket)
 
 void HttpRequest::decodeRequestParams()
 {
-    #ifdef SUPERVERBOSE
-        qDebug("HttpRequest: extract and decode request parameters");
-    #endif
+#ifdef SUPERVERBOSE
+   qDebug("HttpRequest: extract and decode request parameters");
+#endif
     // Get URL parameters
     QByteArray rawParameters;
     int questionMark=path.indexOf('?');
