@@ -24,7 +24,6 @@ RequestHandler::RequestHandler(QObject* parent)
     qDebug("RequestHandler: created");
 }
 
-
 RequestHandler::~RequestHandler()
 {
     qDebug("RequestHandler: deleted");

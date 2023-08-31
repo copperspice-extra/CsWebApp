@@ -46,7 +46,7 @@ QString searchConfigFile()
         if (file.exists())
         {
             fileName=QDir(file.fileName()).canonicalPath();
-            qDebug("Using config file %s",qPrintable(fileName));
+            qDebug("Using config file %s", csPrintable(fileName));
             return fileName;
         }
     }
@@ -55,9 +55,9 @@ QString searchConfigFile()
     //foreach (QString dir, searchList)
     for(int i=0; i<searchList.size(); i++)
     {
-        qWarning("%s/%s not found",qPrintable(searchList[i]),qPrintable(fileName));
+        qWarning("%s/%s not found", csPrintable(searchList[i]), csPrintable(fileName));
     }
-    qFatal("Cannot find config file %s",qPrintable(fileName));
+    qFatal("Can not find config file %s", csPrintable(fileName));
     return QString();
 }
 

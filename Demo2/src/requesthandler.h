@@ -29,6 +29,7 @@ using namespace stefanfrings;
 class RequestHandler : public HttpRequestHandler {
     CS_OBJECT(RequestHandler)
     Q_DISABLE_COPY(RequestHandler)
+
 public:
 
     /**

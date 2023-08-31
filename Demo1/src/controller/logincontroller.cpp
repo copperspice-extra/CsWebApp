@@ -36,7 +36,7 @@ void LoginController::service(HttpRequest& request, HttpResponse& response)
     else
     {
         QByteArray decoded = QByteArray::fromBase64(auth.mid(6)); // Skip the first 6 characters ("Basic ")
-        qWarning("Authorization request from %s",qPrintable(decoded));
+        qWarning("Authorization request from %s", csPrintable(decoded));
         QList<QByteArray> parts = decoded.split(':');
         QByteArray name=parts[0];
         QByteArray password=parts[1];
