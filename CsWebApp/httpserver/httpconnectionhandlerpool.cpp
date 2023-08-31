@@ -15,7 +15,7 @@
 *
 **************************************************************************/
 
-#ifndef QT_NO_SSL
+#if defined (QT_SSL)
     #include <QSslCertificate>
     #include <QSslConfiguration>
     #include <QSslKey>
@@ -116,7 +116,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
 
     if (!sslKeyFileName.isEmpty() && !sslCertFileName.isEmpty())
     {
-        #ifdef QT_NO_SSL
+#if ! defined (QT_SSL)
             qWarning("HttpConnectionHandlerPool: SSL is not supported");
         #else
             // Convert relative fileNames to absolute, based on the directory of the config file.
