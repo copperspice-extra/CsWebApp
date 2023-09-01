@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
     // Initialize the core application
     QCoreApplication app(argc, argv);
     app.setApplicationName("Demo2");
+    app.setOrganizationName("CsWebApp");
 
     // Collect hardcoded configarion settings
     QSettings *settings = new QSettings(&app);
